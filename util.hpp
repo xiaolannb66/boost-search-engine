@@ -22,7 +22,7 @@ namespace ns_util{
                 }
 
                 std::string line;
-                while(std::getline(in, line)){ //如何理解getline读取到文件结束呢？？getline的返回值是一个&，while(bool), 本质是因为重载了强制类型转化
+                while(std::getline(in, line)){ 
                     *out += line;
                 }
 
