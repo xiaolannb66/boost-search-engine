@@ -48,7 +48,7 @@ bool EnumFile(const std::string &src_path, std::vector<std::string> *files_list)
     namespace fs = boost::filesystem;
     fs::path root_path(src_path);
 
-    //判断路径是否存在，不存在，就没有必要再往后走了
+    //判断路径是否存在
     if(!fs::exists(root_path)){
         std::cerr << src_path << " not exists" << std::endl;
         return false;
