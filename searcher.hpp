@@ -38,10 +38,10 @@ namespace ns_searcher{
             //json_string: 返回给用户浏览器的搜索结果
             void Search(const std::string &query, std::string *json_string)
             {
-                //1.[分词]:对我们的query进行按照searcher的要求进行分词
+                //1. 对query进行按照searcher的要求进行分词
                 std::vector<std::string> words;
                 ns_util::JiebaUtil::CutString(query, &words);
-                //2.[触发]:就是根据分词的各个"词"，进行index查找,建立index是忽略大小写，所以搜索，关键字也需要
+                //2. 根据分词的各个"词"，进行index查找
                 //ns_index::InvertedList inverted_list_all; //内部InvertedElem
                 std::vector<InvertedElemPrint> inverted_list_all;
 
@@ -54,11 +54,10 @@ namespace ns_searcher{
                     if(nullptr == inverted_list){
                         continue;
                     }
-                    //不完美的地方：暂时可以交给大家 , 你/是/一个/好人 100
+                    
                     //inverted_list_all.insert(inverted_list_all.end(), inverted_list->begin(), inverted_list->end());
                     for(const auto &elem : *inverted_list){
-                        auto &item = tokens_map[elem.doc_id]; //[]:如果存在直接获取，如果不存在新建
-                        //item一定是doc_id相同的print节点
+                        auto &item = tokens_map[elem.doc_id]; 
                         item.doc_id = elem.doc_id;
                         item.weight += elem.weight;
                         item.words.push_back(elem.word);
@@ -68,16 +67,12 @@ namespace ns_searcher{
                     inverted_list_all.push_back(std::move(item.second));
                 }
 
-                //3.[合并排序]：汇总查找结果，按照相关性(weight)降序排序
-                //std::sort(inverted_list_all.begin(), inverted_list_all.end(),\
-                //      [](const ns_index::InvertedElem &e1, const ns_index::InvertedElem &e2){
-                //        return e1.weight > e2.weight;
-                //        });
-                  std::sort(inverted_list_all.begin(), inverted_list_all.end(),\
+                //3.汇总查找结果，按照相关性(weight)降序排序
+                std::sort(inverted_list_all.begin(), inverted_list_all.end(),\
                           [](const InvertedElemPrint &e1, const InvertedElemPrint &e2){
                           return e1.weight > e2.weight;
                           });
-                //4.[构建]:根据查找出来的结果，构建json串 -- jsoncpp --通过jsoncpp完成序列化&&反序列化
+                //4. 根据查找出来的结果，构建json串
                 Json::Value root;
                 for(auto &item : inverted_list_all){
                     ns_index::DocInfo * doc = index->GetForwardIndex(item.doc_id);
@@ -115,14 +110,14 @@ namespace ns_searcher{
                 }
                 int pos = std::distance(html_content.begin(), iter);
 
-                //2. 获取start，end , std::size_t 无符号整数
+                //2. 获取start，end
                 int start = 0; 
                 int end = html_content.size() - 1;
                 //如果之前有50+字符，就更新开始位置
                 if(pos > start + prev_step) start = pos - prev_step;
                 if(pos < end - next_step) end = pos + next_step;
 
-                //3. 截取子串,return
+                //3. 截取子串
                 if(start >= end) return "None2";
                 std::string desc = html_content.substr(start, end - start);
                 desc += "...";
