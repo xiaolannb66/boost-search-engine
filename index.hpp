@@ -15,7 +15,7 @@ namespace ns_index{
         std::string title;   //文档的标题
         std::string content; //文档对应的去标签之后的内容
         std::string url;     //官网文档url
-        uint64_t doc_id;          //文档的ID，暂时先不做过多理解
+        uint64_t doc_id;          //文档的ID
     };
 
     struct InvertedElem{
