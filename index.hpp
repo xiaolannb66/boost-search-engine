@@ -120,7 +120,7 @@ namespace ns_index{
                 doc.title = results[0]; //title
                 doc.content = results[1]; //content
                 doc.url = results[2];   ///url
-                doc.doc_id = forward_index.size(); //先进行保存id，在插入，对应的id就是当前doc在vector中的下标!
+                doc.doc_id = forward_index.size(); //先进行保存id，在插入，对应的id就是当前doc在vector中的下标
                 //3. 插入到正排索引的vector
                 forward_index.push_back(std::move(doc)); //doc,html文件内容
                 return &forward_index.back();
