@@ -32,10 +32,10 @@ namespace ns_index{
         private:
             //正排索引的数据结构用数组，数组的下标天然是文档的ID
             std::vector<DocInfo> forward_index; //正排索引
-            //倒排索引一定是一个关键字和一组(个)InvertedElem对应[关键字和倒排拉链的映射关系]
+            //倒排索引
             std::unordered_map<std::string, InvertedList> inverted_index;
         private:
-            Index(){} //但是一定要有函数体，不能delete
+            Index(){} 
             Index(const Index&) = delete;
             Index& operator=(const Index&) = delete;
 
